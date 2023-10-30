@@ -1,11 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
+ content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        greenbtn:'#25AE88',
+        yellowbtn:'#ebba16',
+        bannerBgColor:"#f9f9f9"
+      }
+    },
   },
   plugins: [],
 }

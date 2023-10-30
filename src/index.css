@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-style{
+       @apply py-2 px-5 flex items-center justify-center text-white rounded-md font-semibold
+}
+
+.text-style{
+       @apply flex items-center justify-center font-bold text-blue-900 gap-x-2 text-sm lg:text-base lg:ml-2
+}
+
+#pointer {
+       width: 150px;
+       height: 30px;
+       position: relative;
+       background: #054a84;
+
+}
+#pointer:after {
+       content: "";
+       position: absolute;
+       right: 0;
+       bottom: 0;
+       width: 0;
+       height: 0;
+       border-right: 15px solid white;
+       border-top: 15px solid transparent;
+       border-bottom: 15px solid transparent;
+}

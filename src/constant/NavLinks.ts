@@ -1,7 +1,7 @@
 interface NavLinksType {
   id: number;
   title: string;
-  path?: string;
+  path: string;
 }
 
 export const NavLinks: NavLinksType[] = [
@@ -23,5 +23,6 @@ export const NavLinks: NavLinksType[] = [
   {
     id: 4,
     title: "news & more",
+    path: "#",
   },
 ];
