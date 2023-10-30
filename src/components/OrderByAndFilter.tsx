@@ -1,8 +1,5 @@
-import { useState } from "react";
 import { FaFilter } from "react-icons/fa";
-// interface PropsType{
 
-// }
 const OrderByAndFilter = ({
   handleFilterOpenModal,
 }: {

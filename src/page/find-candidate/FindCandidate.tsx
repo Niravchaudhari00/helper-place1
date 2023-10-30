@@ -8,9 +8,10 @@ const FindCandidate = () => {
   const [filterOpenModal, setFilterOpenModal] = useState<boolean>(false);
 
   const handleFilterOpenModal = (x: boolean) => {
-    console.log(`filter : `, x);
     setFilterOpenModal(x);
   };
+
+  //
   return (
     <div>
       <div>
@@ -22,7 +23,6 @@ const FindCandidate = () => {
           filterOpenModal={filterOpenModal}
           handleFilterOpenModal={handleFilterOpenModal}
         />
-
         <CandidateCart />
       </div>
     </div>

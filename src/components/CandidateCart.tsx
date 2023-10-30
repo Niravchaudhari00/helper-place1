@@ -1,13 +1,6 @@
 import { ImLocation } from "react-icons/im";
 import { BiSolidCircle, BiSolidBadge } from "react-icons/bi";
 import { FaCalendarDays } from "react-icons/fa6";
-
-// interface propsType{
-//        name:string;
-//        heading:string;
-//        description:string
-
-// }
 const CandidateCart = () => {
   return (
     <div>
