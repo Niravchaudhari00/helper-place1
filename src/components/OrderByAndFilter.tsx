@@ -1,27 +1,48 @@
 import { FaFilter } from "react-icons/fa";
 
-const OrderByAndFilter = ({
-  handleFilterOpenModal,
-}: {
-  handleFilterOpenModal: (x: boolean) => void;
-}) => {
+export interface OrderBy {
+  id: number;
+  value: string;
+  label: string;
+}
+interface PropsType {
+  handleOpenFilterModal: (x: boolean) => void;
+  handleSetOrderByValue: (value: string) => void;
+  orderBy: string | undefined;
+}
+
+const OrderByAndFilter = (props: PropsType) => {
+  const arrOfOrderBy: OrderBy[] = [
+    { id: 1, value: "last_active", label: "Last Active" },
+    { id: 2, value: "available_from", label: "Available From" },
+    { id: 3, value: "publish_date", label: "Publish Date" },
+  ];
+
+  const { handleOpenFilterModal, handleSetOrderByValue } = props;
+
   return (
     <div>
       <div className="w-11/12 px-1 mx-auto flex lg:flex-row-reverse justify-between items-center">
         <div className="flex flex-wrap items-center justify-center gap-1">
-          <span className="capitalize text-blue-900 font-bold">
-            order by :{" "}
-          </span>
-          <select name="" id="" className="border border-black p-1 px-3 ">
-            <option className="rounded-none" value="">
-              Last Active
-            </option>
-            <option value="">Last Active</option>
+          <span className="capitalize text-blue-900 font-bold">order by :</span>
+          <select
+            onClick={(e: any) => handleSetOrderByValue(e.target.value)}
+            className="border border-gray-300 outline-[0.1rem] outline-blue-500/50 p-1 px-3 "
+          >
+            {arrOfOrderBy.map((opation) => (
+              <option
+                key={opation.id}
+                className="capitalize text-sm"
+                value={opation.value}
+              >
+                {opation.label}
+              </option>
+            ))}
           </select>
         </div>
         {/* filter button show when mobile view */}
         <button
-          onClick={() => handleFilterOpenModal(true)}
+          onClick={() => handleOpenFilterModal(true)}
           className="btn-style bg-blue-900 flex items-center justify-center gap-x-2 lg:hidden"
         >
           <span>

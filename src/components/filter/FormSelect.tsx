@@ -1,11 +1,11 @@
 import Select, { components } from "react-select";
-import { JobLocationType } from "./FilterSection";
 import { useState } from "react";
 
 interface PropsType {
   title: string;
   placeholder: string;
-  value: JobLocationType[];
+  option: any;
+  handleOptionValue: (data: any[]) => void;
 }
 
 const InputOption = ({
@@ -33,7 +33,8 @@ const InputOption = ({
     backgroundColor: bg,
     color: "inherit",
     display: "flex",
-    rowGap: "5",
+    rowGap: "3",
+    fontSize: "0.85rem",
   };
 
   // prop assignment
@@ -54,36 +55,27 @@ const InputOption = ({
       getStyles={getStyles}
       innerProps={props}
     >
-      <input className="mr-3" type="checkbox" checked={isSelected} />
+      <input className="mr-2" type="checkbox" checked={isSelected} />
       {children}
     </components.Option>
   );
 };
 
 const FormSelect = (props: PropsType) => {
-  const { title, placeholder } = props;
+  const { title, placeholder, option, handleOptionValue } = props;
 
-  const allOptions: any = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
-  const [selectedOptions, setSelectedOptions] = useState<any>([]);
-
-  console.log("selectedOptions: ", selectedOptions);
   return (
     <div className="my-2">
       <h2 className="font-semibold text-blue-900 my-1 capitalize">{title}</h2>
       <Select
-        // defaultValue={[]}
+        defaultValue={[]}
         isMulti
         closeMenuOnSelect={false}
         hideSelectedOptions={false}
-        options={allOptions}
+        options={option}
         onChange={(options) => {
           if (Array.isArray(options)) {
-            setSelectedOptions(options?.map((opt: any) => opt.value));
+            handleOptionValue(options?.map((opt: any) => opt.value));
           }
         }}
         components={{
