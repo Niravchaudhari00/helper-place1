@@ -14,8 +14,7 @@ function App() {
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="find-candidate" element={<FindCandidate />} />
-
+            <Route index path="find-candidate" element={<FindCandidate />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

@@ -6,7 +6,7 @@ import { AiOutlineCaretDown } from "react-icons/ai";
 
 const Navbar = () => {
   return (
-    <div className="relative">
+    <div>
       <div className="w-11/12 mx-auto px-2 my-2 h-14 flex items-center md:justify-center lg:justify-between  gap-x-5 lg:gap-x-0">
         {/* logo */}
         <div className="lg:hidden md:absolute text-[30px] left-5">
