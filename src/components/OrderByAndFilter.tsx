@@ -48,7 +48,9 @@ const OrderByAndFilter = (props: PropsType) => {
     <div>
       <div className="w-11/12 px-1 mx-auto flex lg:flex-row-reverse justify-between items-center">
         <div className="flex flex-wrap items-center justify-center gap-1">
-          <span className="capitalize text-blue-900 font-bold">order by :</span>
+          <span className="capitalize text-blue-900 font-bold hidden sm:block">
+            order by :
+          </span>
           <select
             value={orderByValue}
             onChange={(e: any) => {

@@ -45,6 +45,10 @@ const FilterSection = (props: PropsType) => {
   const [orderBy, setOrderBy] = useState<string>("");
   const [searchHelperName, setSearchHelperName] = useState<string>("");
 
+  const searchValue = d.debounce((name: string) => {
+    return name ? name : "";
+  }, 1000);
+
   const handlerQueryParams = (key: string, value: any) => {
     if (value) {
       let params = new URLSearchParams(searchParams);
@@ -222,6 +226,10 @@ const FilterSection = (props: PropsType) => {
     } else {
       setSearchHelperName("");
     }
+
+    // page
+    let page = getSearchParamsValue("page");
+    page ? setPage(Number(page)) : setPage(1);
   }, [searchParams]);
 
   const handleGetJobPositionValue = (jbPositionValue: string) => {
@@ -272,7 +280,6 @@ const FilterSection = (props: PropsType) => {
   const nationalityOpationValue = (nationalityValue: any) => {
     if (nationalityValue) {
       handlerQueryParams("nationality", nationalityValue);
-      console.log("true: ", nationalityValue);
     } else {
       handlerQueryParams("nationality", "");
     }
@@ -386,7 +393,7 @@ const FilterSection = (props: PropsType) => {
   };
 
   const handlePageChang = (page: number) => {
-    setPage(page);
+    handlerQueryParams("page", page);
   };
 
   // search
@@ -396,18 +403,18 @@ const FilterSection = (props: PropsType) => {
 
   return (
     <div>
-      <div className="w-full flex gap-x-5">
+      <div className="w-full flex gap-x-5 relative">
         <div
           className={`${
             filterOpenModal
-              ? "fixed inset-0 !mt-0 grid place-items-center overflow-auto bg-white bg-opacity-5 backdrop-blur-sm z-[1000]"
+              ? "py-10 fixed inset-0 !mt-0 grid place-items-center overflow-auto bg-white bg-opacity-5 backdrop-blur-sm z-[1000]"
               : "hidden lg:block"
           }`}
         >
           <div
             className={`${
               filterOpenModal
-                ? `sm:w-[500px] w-[320px]  shadow rounded-lg bg-white p-5 border border-gray-400`
+                ? ` sm:w-[500px] w-[320px]  shadow rounded-lg bg-white p-5 px-7 lg:px-5 border border-gray-400`
                 : "p-5 border border-gray-400 lg:w-[350px] my-10 shadow rounded-lg bg-bannerBgColor"
             }`}
           >
@@ -623,6 +630,7 @@ const FilterSection = (props: PropsType) => {
               <div className="space-y-1 my-2">
                 <h2 className="text-blue-900 font-semibold ">Helper Name</h2>
                 <input
+                  value={searchValue(searchHelperName)}
                   onChange={(e: any) => debounceSearch(e.target.value)}
                   className="w-full text-sm px-1 py-[0.4rem] border border-gray-300 outline-[2px] outline-blue-500 rounded-md"
                   type="text"
