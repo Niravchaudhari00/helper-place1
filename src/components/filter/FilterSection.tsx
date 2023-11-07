@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { BiReset } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import { createSearchParams, useSearchParams } from "react-router-dom";
-import axiosInstance from "../../service/axiosInstance";
 import { ResumeType, gender_data, resume_type } from "../../utils/data";
 import { formateValue } from "../../utils/formateName";
 import CandidateCart from "../CandidateCart";
@@ -11,7 +10,8 @@ import FormRadio from "./FormRadio";
 import FormSelect from "./FormSelect";
 import SelecteDate from "./SelecteDate";
 import Paginate from "./Paginate";
-import d from "lodash";
+import _ from "lodash";
+import useFetch from "../../hooks/useFetch";
 
 const finCandidatedUrl: string = `https://api2.helperplace.com/mobile/candidate/FindCandidate`;
 
@@ -25,10 +25,7 @@ const FilterSection = (props: PropsType) => {
   // Props Value
   const { filterOpenModal, handleOpenFilterModal, masterDataJson } = props;
   const [searchParams, setSearchParams] = useSearchParams();
-  const [candidateData, setCandidateData] = useState<any[]>([]);
-  const [totalRecord, setTotalRecord] = useState<number>();
   // +++++++++++++++++++++++++++++++++++++++++++++++++++
-  const [loading, setLoading] = useState<boolean>(false);
   const [exprince, setExprice] = useState<number[]>([0, 40]);
   const [age, setAge] = useState<number[]>([18, 60]);
   const [jobPosition, setJobPosition] = useState<any[]>([]);
@@ -45,7 +42,7 @@ const FilterSection = (props: PropsType) => {
   const [orderBy, setOrderBy] = useState<string>("");
   const [searchHelperName, setSearchHelperName] = useState<string>("");
 
-  const searchValue = d.debounce((name: string) => {
+  const searchValue = _.debounce((name: string) => {
     return name ? name : "";
   }, 1000);
 
@@ -60,6 +57,61 @@ const FilterSection = (props: PropsType) => {
       setSearchParams(params);
     }
   };
+
+  // QUERY
+  const generateQuery = () => {
+    let obj = {
+      start: page - 1,
+      length: 20,
+
+      helper_name: searchHelperName && searchHelperName,
+      start_date: date ? date : "",
+      job_type_id: jobType.length > 0 ? jobType[0]?.job_type_id : "",
+      country_id: candidateLocation
+        ? candidateLocation.map((conId) => conId.country_id).join(",")
+        : "",
+      position_id:
+        jobPosition.length > 0 ? jobPosition[0]?.job_position_id : "",
+      nationality_id:
+        nationality.length > 0 ? nationality[0]?.nationality_id : "",
+      edu_id: "",
+      contract_status_id: contractSts
+        ? contractSts.map((contSts) => contSts.contract_sts_id).join(",")
+        : "",
+      resume_manager: postManager ? postManager : "",
+      gender: gender ? gender : "",
+      age_min: age && age[0],
+      age_max: age && age[1],
+      experience_min: exprince && exprince[0],
+      experience_max: exprince && exprince[1],
+      marital_status: "",
+      order_by: orderBy,
+      location_order: 0,
+      lang: "en",
+    };
+
+    let query = "?";
+    for (const [key, value] of Object.entries(obj)) {
+      query += `${key}=${value}&`;
+    }
+
+    let skillQry = "";
+    Langskill.forEach((id) => {
+      skillQry += `skill_id=${id.skill_id}&`;
+    });
+
+    mainskill.forEach((id) => {
+      skillQry += `skill_id=${id.skill_id}&`;
+    });
+
+    query += skillQry;
+    query = query.slice(0, -1);
+    return query;
+  };
+
+  const [candidateData, loading, totalRecord] = useFetch(
+    `${finCandidatedUrl}/${generateQuery()}`
+  );
 
   // setPosition Value
   const setJPositionValue = (jobPvalue: any) => {
@@ -86,40 +138,6 @@ const FilterSection = (props: PropsType) => {
     let value = searchParams.get(key);
     if (value) return value;
   };
-
-  //Fetch Findcandidate Data
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const response = await axiosInstance.get(
-          `${finCandidatedUrl}/${generateQuery()}`
-        );
-
-        setCandidateData(response.data.data);
-        setTotalRecord(response.data.records_total);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-      setLoading(false);
-    })();
-  }, [
-    jobPosition,
-    date,
-    exprince,
-    age,
-    jobType,
-    candidateLocation,
-    gender,
-    postManager,
-    contractSts,
-    orderBy,
-    nationality,
-    page,
-    Langskill,
-    mainskill,
-  ]);
 
   useEffect(() => {
     // order by value
@@ -257,8 +275,8 @@ const FilterSection = (props: PropsType) => {
   };
 
   // Expirnce
-  const handleChangeExp = (event: Event, newValue: number | number[]) => {
-    let value = newValue as number[];
+  const handleChangeExp = (event: any) => {
+    let value = event.target.value as number[];
     if (value)
       handlerQueryParams(
         "experience_range",
@@ -267,8 +285,8 @@ const FilterSection = (props: PropsType) => {
   };
 
   // Age
-  const handleChangeAge = (event: Event, newValue: number | number[]) => {
-    let ageValue = newValue as number[];
+  const handleChangeAge = (event: any) => {
+    let ageValue = event.target.value as number[];
     if (ageValue)
       handlerQueryParams(
         "age_range",
@@ -335,57 +353,6 @@ const FilterSection = (props: PropsType) => {
     }
   };
 
-  // QUERY
-  const generateQuery = () => {
-    let obj = {
-      start: page - 1,
-      length: 20,
-
-      helper_name: searchHelperName && searchHelperName,
-      start_date: date ? date : "",
-      job_type_id: jobType.length > 0 ? jobType[0]?.job_type_id : "",
-      country_id: candidateLocation
-        ? candidateLocation.map((conId) => conId.country_id).join(",")
-        : "",
-      position_id:
-        jobPosition.length > 0 ? jobPosition[0]?.job_position_id : "",
-      nationality_id:
-        nationality.length > 0 ? nationality[0]?.nationality_id : "",
-      edu_id: "",
-      contract_status_id: contractSts
-        ? contractSts.map((contSts) => contSts.contract_sts_id).join(",")
-        : "",
-      resume_manager: postManager ? postManager : "",
-      gender: gender ? gender : "",
-      age_min: age && age[0],
-      age_max: age && age[1],
-      experience_min: exprince && exprince[0],
-      experience_max: exprince && exprince[1],
-      marital_status: "",
-      order_by: orderBy,
-      location_order: 0,
-      lang: "en",
-    };
-
-    let query = "?";
-    for (const [key, value] of Object.entries(obj)) {
-      query += `${key}=${value}&`;
-    }
-
-    let skillQry = "";
-    Langskill.forEach((id) => {
-      skillQry += `skill_id=${id.skill_id}&`;
-    });
-
-    mainskill.forEach((id) => {
-      skillQry += `skill_id=${id.skill_id}&`;
-    });
-
-    query += skillQry;
-    query = query.slice(0, -1);
-    return query;
-  };
-
   // Reset
   const handleReset = () => {
     setSearchParams(createSearchParams({ page: page }));
@@ -397,7 +364,7 @@ const FilterSection = (props: PropsType) => {
   };
 
   // search
-  const debounceSearch = d.debounce((name: string) => {
+  const debounceSearch = _.debounce((name: string) => {
     handlerQueryParams("name", name);
   }, 1000);
 

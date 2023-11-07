@@ -30,7 +30,7 @@ const Paginate = (props: PropsType) => {
         variant="outlined"
         shape="rounded"
         siblingCount={0}
-        boundaryCount={1}
+        boundaryCount={2}
       />
     </div>
   );
