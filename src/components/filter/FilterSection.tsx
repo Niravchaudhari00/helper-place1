@@ -1,17 +1,17 @@
 import { Slider } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import _ from "lodash";
+import { useEffect, useState } from "react";
 import { BiReset } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import { createSearchParams, useSearchParams } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 import { ResumeType, gender_data, resume_type } from "../../utils/data";
 import { formateValue } from "../../utils/formateName";
 import CandidateCart from "../CandidateCart";
 import FormRadio from "./FormRadio";
 import FormSelect from "./FormSelect";
-import SelecteDate from "./SelecteDate";
 import Paginate from "./Paginate";
-import _ from "lodash";
-import useFetch from "../../hooks/useFetch";
+import SelecteDate from "./SelecteDate";
 
 const finCandidatedUrl: string = `https://api2.helperplace.com/mobile/candidate/FindCandidate`;
 
@@ -41,6 +41,7 @@ const FilterSection = (props: PropsType) => {
   const [page, setPage] = useState<any>(1);
   const [orderBy, setOrderBy] = useState<string>("");
   const [searchHelperName, setSearchHelperName] = useState<string>("");
+  const [isFetch, setIsFetch] = useState<boolean>(false);
 
   const searchValue = _.debounce((name: string) => {
     return name ? name : "";

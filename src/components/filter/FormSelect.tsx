@@ -1,5 +1,5 @@
-import Select, { components } from "react-select";
 import { useEffect, useState } from "react";
+import Select, { components } from "react-select";
 
 interface PropsType {
   title: string;
