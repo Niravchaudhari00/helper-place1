@@ -27,3 +27,14 @@
        border-top: 15px solid transparent;
        border-bottom: 15px solid transparent;
 }
+
+.progress-bar {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0;
+       height: 5px;
+       background: #25AE88;
+       transform-origin: 0%;
+       z-index: 10000;
+     }

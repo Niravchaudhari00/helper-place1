@@ -1,6 +1,6 @@
 import { Slider } from "@mui/material";
 import _ from "lodash";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BiReset } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import { createSearchParams, useSearchParams } from "react-router-dom";
@@ -60,7 +60,7 @@ const FilterSection = (props: PropsType) => {
   };
 
   // QUERY
-  const generateQuery = () => {
+  const generateQuery = useCallback(() => {
     let obj = {
       start: page - 1,
       length: 20,
@@ -108,7 +108,7 @@ const FilterSection = (props: PropsType) => {
     query += skillQry;
     query = query.slice(0, -1);
     return query;
-  };
+  }, [jobPosition]);
 
   const [candidateData, loading, totalRecord] = useFetch(
     `${finCandidatedUrl}/${generateQuery()}`

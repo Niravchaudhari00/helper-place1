@@ -1,13 +1,18 @@
+import { AnimatePresence } from "framer-motion";
 import Banner from "../../components/Banner";
+import LogoStype from "../../components/LogoStype";
+import Form from "../../components/Form";
 
 const Home = () => {
   return (
     <div className="">
       <Banner />
       {/* <OrderByAndFilter /> */}
-      <div className="w-11/12 gap-x-5 flex justify-start lg:justify-between mx-auto">
-        {/* <FilterSection /> */}
-      </div>
+      {/* <AnimatePresence>
+        <LogoStype key="dialog" />
+      </AnimatePresence> */}
+
+      <Form />
     </div>
   );
 };
