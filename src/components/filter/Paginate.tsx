@@ -13,8 +13,11 @@ const Paginate = (props: PropsType) => {
     return Math.ceil(no / 20);
   };
 
-  const pageChangeHandler = (event: any) => {
-    handlePageChang(event.target.value);
+  const pageChangeHandler = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    handlePageChang(value);
   };
 
   return (
